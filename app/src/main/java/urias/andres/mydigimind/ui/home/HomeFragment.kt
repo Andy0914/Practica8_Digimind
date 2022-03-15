@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
         override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
             var rec = recordatorio[p0]
             var inflator = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            var vista = inflator.inflate(R.layout.recordatorios, null)
+            var vista = inflator.inflate(R.layout.recordatorio, null)
             vista.txtDiasRecordatorio.text = rec.dias.toString()
             vista.txtNombreRecordatorio.text = rec.nombre.toString()
             vista.txtTiempoRecordatorio.text = rec.tiempo.toString()
