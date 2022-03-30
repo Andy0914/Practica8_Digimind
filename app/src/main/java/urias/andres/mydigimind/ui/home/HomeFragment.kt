@@ -7,33 +7,57 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.GridView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.recordatorio.*
 import kotlinx.android.synthetic.main.recordatorio.view.*
 import urias.andres.mydigimind.Carrito
 import urias.andres.mydigimind.R
 import urias.andres.mydigimind.Recordatorio
+import urias.andres.mydigimind.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
+    companion object {
+        var recordatorio = ArrayList<Recordatorio>()
+        var first = true
+    }
+
     private lateinit var homeViewModel:HomeViewModel
     var carrito = Carrito()
     private var adapter: RecordatorioAdapter? = null
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeViewModel =
+        val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home,container,false)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer{
 
-        })
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+        if(first){
+            fillTasks()
+            first= false
+        }
+
+        adapter = RecordatorioAdapter(root.context, recordatorio)
+        val table : GridView = root.findViewById(R.id.gridView)
+        table.adapter = adapter
         return root
+    }
+
+    fun fillTasks(){
+        recordatorio.add(Recordatorio( arrayListOf("Tuesday"), "17:30","Practice 1"))
+        recordatorio.add(Recordatorio( arrayListOf("Monday","Saturday"), "17:00","Practice 2"))
+        recordatorio.add(Recordatorio( arrayListOf("Wednesday"), "14:00","Practice 3"))
+        recordatorio.add(Recordatorio( arrayListOf("Saturday"), "11:00","Practice 4"))
+        recordatorio.add(Recordatorio( arrayListOf("Friday"), "13:00","Practice 5"))
+        recordatorio.add(Recordatorio( arrayListOf("Thursday"), "10:40","Practice 6"))
+        recordatorio.add(Recordatorio( arrayListOf("Monday"), "12:00","Practice 7"))
     }
 
     @SuppressLint("ResourceType")

@@ -1,9 +1,14 @@
 package urias.andres.mydigimind.ui.dashboard
 
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Observer
@@ -12,97 +17,91 @@ import kotlinx.android.synthetic.main.fragment_dashboard.*
 import urias.andres.mydigimind.R
 import urias.andres.mydigimind.Recordatorio
 import urias.andres.mydigimind.Tiempo
+import urias.andres.mydigimind.databinding.FragmentDashboardBinding
+import urias.andres.mydigimind.ui.home.HomeFragment
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DashboardFragment : Fragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
+    private var _binding: FragmentDashboardBinding? = null
+
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard,container,false)
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+        val dashboardViewModel =
+            ViewModelProvider(this).get(DashboardViewModel::class.java)
 
-        })
+        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+
+        val root: View = binding.root
+        val btnSetTime: Button = root.findViewById(R.id.btnTiempo) as Button
+        val btnAdd = root.findViewById(R.id.btnGuardar) as Button
+        val toDo = root.findViewById(R.id.editTextInputRemember) as EditText
+        val check_monday = root.findViewById(R.id.check_Lunes) as CheckBox
+        val check_tuesday = root.findViewById(R.id.check_Martes) as CheckBox
+        val check_wednesday = root.findViewById(R.id.check_Miercoles) as CheckBox
+        val check_thursday = root.findViewById(R.id.check_Jueves) as CheckBox
+        val check_friday = root.findViewById(R.id.check_viernes) as CheckBox
+        val check_saturday = root.findViewById(R.id.check_sabado) as CheckBox
+        val check_sunday = root.findViewById(R.id.check_Domingo) as CheckBox
+
+        btnSetTime.setOnClickListener(){
+            val cal = Calendar.getInstance()
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                cal.set(Calendar.HOUR_OF_DAY, hour)
+                cal.set(Calendar.MINUTE, minute)
+
+                btnSetTime.text= SimpleDateFormat("HH:mm").format(cal.time)
+            }
+            TimePickerDialog(root.context,timeSetListener,cal.get(Calendar.HOUR_OF_DAY),
+                cal.get(Calendar.MINUTE),true).show()
+        }
+
+        btnAdd.setOnClickListener{
+            var descriptionToDo = toDo.text.toString()
+            var time = btnSetTime.text.toString()
+            var days = ArrayList<String>()
+
+            if(check_monday.isChecked){
+                days.add("Monday")
+            }
+            if(check_tuesday.isChecked){
+                days.add("Tuesday")
+            }
+            if(check_wednesday.isChecked){
+                days.add("Wednesday")
+            }
+            if(check_thursday.isChecked){
+                days.add("Thursday")
+            }
+            if(check_friday.isChecked){
+                days.add("Friday")
+            }
+            if(check_saturday.isChecked){
+                days.add("Saturday")
+            }
+            if(check_sunday.isChecked){
+                days.add("Sunday")
+            }
+
+            var recordatorio = Recordatorio(days,time,descriptionToDo)
+
+            HomeFragment.recordatorio.add(recordatorio)
+            Toast.makeText(root.context,"New task added", Toast.LENGTH_SHORT).show()
+
+        }
+
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        btnTiempo.setOnClickListener {
-            showTimePickerDialog()
-        }
-        btnGuardar.setOnClickListener {
-            var nombre = editTextInputRemember.text
-            var dias = ""
-            var tiempo = txtHoras.text.toString()
-            if( check_Lunes.isChecked) {
-                dias+= "Lun"
-            }
-            if(check_Martes.isChecked) {
-                dias += if (dias.isNotEmpty()){
-                    ",Mar"
-                }else
-                    "Mar"
-            }
-            if(check_Miercoles.isChecked) {
-                dias+= if(dias.isNotEmpty()){
-                    ",Mier"
-                }else "Mier"
-            }
-            if(check_Jueves.isChecked) {
-                dias+= if(dias.isNotEmpty()){
-                    ",Jue"
-                }else
-                    "Jue"
-            }
-            if(check_viernes.isChecked) {
-                dias+= if(dias.isNotEmpty()){
-                    ",Vier"
-                }else "Vier"
-            }
-            if(check_sabado.isChecked) {
-                dias+= if(dias.isNotEmpty()){
-                    ",Sab"
-                }else "Sab"
-            }
-            if(check_Domingo.isChecked){
-                dias+= if(dias.isNotEmpty()){
-                    ",Dom"
-                }else "Dom"
-            }
-            if(check_Lunes.isChecked && check_Martes.isChecked && check_Miercoles.isChecked && check_Jueves.isChecked && check_viernes.isChecked &&
-                check_sabado.isChecked && check_Domingo.isChecked) {
-                dias="Todo el dia"
-            }
-
-            var recordatorio = Recordatorio(dias,tiempo,nombre)
-            val bundle = Bundle()
-            bundle.putSerializable("recordatorio",recordatorio)
-            clean()
-            setFragmentResult("key",bundle)
-
-        }
-    }
-    private fun showTimePickerDialog(){
-        val timePicker = Tiempo{onTimeSelected(it)}
-        timePicker.show(parentFragmentManager,"time")
-    }
-    private fun onTimeSelected(time:String){
-        txtHoras.text = time
-    }
-    private fun clean(){
-        editTextInputRemember.setText("")
-        check_Lunes.isChecked =false
-        check_Martes.isChecked =false
-        check_Miercoles.isChecked =false
-        check_Jueves.isChecked =false
-        check_viernes.isChecked =false
-        check_sabado.isChecked =false
-        check_Domingo.isChecked =false
-        txtHoras.text = ""
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
