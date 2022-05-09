@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1047181458414",
+    "project_id": "mydigimind-cd4e4",
+    "storage_bucket": "mydigimind-cd4e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047181458414:android:490e61f8291f20efbe2cff",
+        "android_client_info": {
+          "package_name": "urias.andres.mydigimind"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047181458414-t8r2kac3ifiata4p0t0q9t8a0ed37u4t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlBTnql3bFhCYdIK1aFC_7gOghCO4dxo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047181458414-t8r2kac3ifiata4p0t0q9t8a0ed37u4t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

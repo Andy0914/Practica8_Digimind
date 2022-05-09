@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RegistroActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:src="@drawable/logobrain"
+        tools:ignore="ImageContrastCheck" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_marginVertical="10dp"
+            android:id="@+id/et_correo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Correo electronico"
+            android:textSize="16sp"
+            tools:ignore="TouchTargetSizeCheck"
+            android:inputType="text"
+            />
+        <EditText
+            android:layout_marginVertical="10dp"
+            android:id="@+id/et_contra_reg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textSize="16sp"
+            android:inputType="textPassword"
+            android:hint="Contraseña"
+            android:minHeight="48dp" />
+        <EditText
+            android:layout_marginVertical="10dp"
+            android:id="@+id/et_contra_reg_conf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textSize="16sp"
+            android:inputType="textPassword"
+            android:hint="Confirmar contraseña"
+            android:minHeight="48dp" />
+        <Button
+            android:id="@+id/btn_registrar"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="10dp"
+            android:textSize="13sp"
+            android:text="Registrarse"/>
+    </LinearLayout>
+</LinearLayout>
